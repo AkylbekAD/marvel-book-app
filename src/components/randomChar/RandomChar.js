@@ -23,12 +23,18 @@ class RandomChar extends Component {
     this.setState({ loading: false, error404: true });
   };
 
+  onCharLoading =() => { // показываем спинер до загрузки
+    this.setState({loading:true})
+  }
+
   onCharLoaded = (char) => {
     // просто перезаписываем state как только данные загрузились, меняем статус загрузки и ошибки
     this.setState({ char, loading: false , error404: false});
   };
 
   updateChar = () => {
+    this.onCharLoading();
+
     const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
 
     this.marvelService
@@ -75,12 +81,11 @@ const View = ({ char }) => {
   };
 
   if (
-    // проверка на отсутствующее изображение
     thumbnail ===
     'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'
   ) {
     isImageFound = {
-      'objectFit': 'contain', // вписывание изображения об отсутствии
+      'objectFit': 'contain',
     };
   }
 

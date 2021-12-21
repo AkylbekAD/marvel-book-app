@@ -57,7 +57,11 @@ class CharList extends Component {
       }
 
       return (
-        <li className="char__item" key={id}>
+        <li 
+          className="char__item"
+          key={id}
+          onClick={()=> this.props.onCharSelected(item.id)} // передаем id в компонент App.js
+          >
           <img src={thumbnail} alt={name} style={isImageFound} />
           <div className="char__name">{name}</div>
           <a href={wiki} target="_blank" rel=" noreferrer" style={{'color': '#ffffff'}}>wiki</a>

@@ -29,8 +29,6 @@ class MarvelService {
     return this._transformCharacter(res.data.results[0]); // вызываем метод в конкесте передавая базовый путь к данным
   };
 
-
-
   _transformCharacter = (char) => {
     // присваиваем и возвращаем полученные данные к state данным
     return {
@@ -38,10 +36,11 @@ class MarvelService {
       name: char.name,
       description: char.description
         ? `${char.description.slice(0, 210)}...`
-        : 'Sorry, there`s no information about it',
+        : 'Sorry, there`s no information about this character',
       thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
       homepage: char.urls[0].url,
       wiki: char.urls[1].url,
+      comics: char.comics.items.slice(0, 9),
     };
   };
 }
