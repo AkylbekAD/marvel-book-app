@@ -40,7 +40,7 @@ class RandomChar extends Component {
     this.marvelService
       .getOneCharacter(id)
       .then(this.onCharLoaded) // вызываем метод для 1 char и передаем его в метод onCharLoaded
-      .catch(this.onError404); //
+      .catch(this.onError404);
   };
 
   render() {

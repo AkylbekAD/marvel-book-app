@@ -27,6 +27,11 @@ class CharInfo extends Component {
 
     }
 
+    componentDidCatch(err, info) {
+        console.log(err, info);
+        this.setState({error404:true});
+    }
+
     updateChar = () => {
         const {charId} = this.props;
         if (!charId) {return}
