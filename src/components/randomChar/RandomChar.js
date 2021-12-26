@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import loadingGear from '../spinner/loading-gear.gif';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import MarvelService from '../../services/MarvelService';
@@ -6,45 +6,49 @@ import MarvelService from '../../services/MarvelService';
 import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
 
-class RandomChar extends Component {
-  state = {
-    char: {},
-    loading: true,
-    error404: false,
+const RandomChar = () => {
+
+  const [char, setChar] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error404, setError404] = useState(false);
+
+  const marvelService = new MarvelService();
+
+  useEffect(() => {
+    updateChar();
+    const timerId = setInterval(updateChar, 60000);
+
+    return () => {
+        clearInterval(timerId)
+    }
+  }, [])
+
+  const onError404 = () => {
+    setLoading(false);
+    setError404(true);
   };
 
-  marvelService = new MarvelService();
-
-  componentDidMount() {
-    this.updateChar();
+  const onCharLoading =() => { // показываем спинер до загрузки
+    setLoading (true)
   }
 
-  onError404 = () => {
-    this.setState({ loading: false, error404: true });
-  };
-
-  onCharLoading =() => { // показываем спинер до загрузки
-    this.setState({loading:true})
-  }
-
-  onCharLoaded = (char) => {
+  const onCharLoaded = (char) => {
     // просто перезаписываем state как только данные загрузились, меняем статус загрузки и ошибки
-    this.setState({ char, loading: false , error404: false});
+    setChar (char);
+    setLoading(false);
   };
 
-  updateChar = () => {
-    this.onCharLoading();
+  const updateChar = () => {
+    setError404 (false) // сбрасываем ошибку для повторной загрузки
+    onCharLoading();
 
     const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
 
-    this.marvelService
-      .getOneCharacter(id)
-      .then(this.onCharLoaded) // вызываем метод для 1 char и передаем его в метод onCharLoaded
-      .catch(this.onError404);
+    marvelService.getOneCharacter(id)
+      .then(onCharLoaded) // вызываем метод для 1 char и передаем его в метод onCharLoaded
+      .catch(onError404);
   };
 
-  render() {
-    let { char, loading, error404 } = this.state;
     const errorMessage = error404 ? <ErrorMessage /> : null;
     const spinner = loading ? (
       <img src={loadingGear} alt="loading..." className="center" />
@@ -63,7 +67,7 @@ class RandomChar extends Component {
             Do you want to get to know him better?
           </p>
           <p className="randomchar__title">Or choose another one</p>
-          <button onClick={this.updateChar} className="button button__main">
+          <button onClick={updateChar} className="button button__main">
             <div className="inner">try it</div>
           </button>
           <img src={mjolnir} alt="mjolnir" className="randomchar__decoration" />
@@ -71,7 +75,6 @@ class RandomChar extends Component {
       </div>
     );
   }
-}
 
 const View = ({ char }) => {
   const { name, description, thumbnail, homepage, wiki } = char;

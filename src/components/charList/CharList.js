@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import MarvelService from '../../services/MarvelService';
 import PropTypes from 'prop-types';
 
@@ -7,86 +7,78 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import './charList.scss';
 
-class CharList extends Component {
-  state = {
-    charsArray: [],
-    loading: true, 
-    error404: false,
-    loadingMore: false, // отвечает за отключение фукнции кнопки Load more
-    offset: 9, // количество загружаемых персонажей
-    charEnded: false // проверка на конечность списка персонажей
+const CharList = (props) => {
+
+  const [charsArray, setCharsArray] = useState ([])
+  const [loading, setLoading] = useState (true)
+  const [error404, setError404] = useState (false)
+  const [loadingMore, setLoadingMore] = useState (false) // отвечает за отключение фукнции кнопки Load more
+  const [offset, setOffset] = useState (210) // id по загрузке новых персонажей
+  const [charEnded, setCharEnded] = useState (false) // проверка на конечность списка персонажей
+
+  const marvelService = new MarvelService();
+
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener ('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (loadingMore && !charEnded) {
+    setOffset (offset => offset + 9)
+    console.log (offset)
+    loadMoreRequest(offset);
+    }
+  }, [loadingMore]);
+
+  const onScroll = (event) => {
+    if (
+      window.innerHeight + window.pageYOffset >= document.body.offsetHeight
+    ) {
+        setLoadingMore(true);
+    }
   };
 
-  marvelService = new MarvelService();
-
-  loadMoreRequest = (offset) => { // подгрузка 9 персонажей на страницу
-    this.onCharListLoading();
-    this.marvelService
-      .getAllCharacters(offset)
-      .then(this.onCharLoaded) // вызываем метод для 1 char и передаем его в метод onCharLoaded
-      .catch(this.onError404);
+  const loadMoreRequest = (offset) => { // подгрузка 9 персонажей на страницу
+    onCharListLoading();
+    marvelService.getAllCharacters(offset)
+      .then(onCharLoaded) // вызываем метод для 1 char и передаем его в метод onCharLoaded
+      .catch(onError404);
   }
 
-  onCharListLoading = () => {
-      this.setState({
-        loadingMore: true
-      })
+  const onCharListLoading = () => {
+      setLoadingMore(true);
   }
 
-  componentDidMount() {
-    this.loadMoreRequest();
-    window.addEventListener('scroll', this.loadMoreByScroll)
-  }
-
-  loadMoreByScroll = () => {
-    if (this.state.charEnded) window.removeEventListener('scroll', this.loadMoreByScroll)
-
-    if (!this.state.loading && !this.state.loadingMore) {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-          this.loadMoreRequest(this.state.offset)
-        }
-     } 
-  } 
-
-  onError404 = () => {
-    this.setState({
-      loading: false, 
-      error404: true 
-  });
-  }
-
-  onCharLoaded = (newCharsArray) => {
+  const onCharLoaded = (newCharsArray) => {
     // просто перезаписываем state как только данные загрузились, меняем статус загрузки и ошибки
     let ended = false;
     if (newCharsArray.length < 9) {
        ended = true;
     }
-    
-    this.setState(({offset, charsArray}) => ({
-        charsArray: [...charsArray, ...newCharsArray],
-        loading: false,
-        loadingMore: false,
-        offset: offset + 9,
-        charEnded: ended,
-    }))
+
+    setCharsArray (charsArray => [...charsArray, ...newCharsArray]);
+    setLoading (false);
+    setLoadingMore (false);
+    setOffset (offset => offset + 9);
+    setCharEnded (ended);
   }
 
-  itemRefs = [];
-
-  setRef = (ref) => {
-    this.itemRefs.push(ref);
+  const onError404 = () => {
+    setLoading (false);
+    setError404(true)
   }
 
-  focusOnItem = (key) => {
-    this.itemRefs.forEach(item => item.classList.remove('char__item_selected'));
+  const itemRefs = useRef ([]);
 
-    this.itemRefs[key].classList.add('char__item_selected');
-    this.itemRefs[key].focus();
-    console.log(this.itemRefs)
+  const focusOnItem = (key) => {
+    itemRefs.current.forEach(item => item.classList.remove('char__item_selected'));
+    itemRefs.current[key].classList.add('char__item_selected');
+    itemRefs.current[key].focus();
   }
 
-  preRenderChars (arr) {
-    const items = arr.map((item) => {
+  function preRenderChars (arr) {
+    const items = arr.map((item, i) => {
       let { key, name, thumbnail} = item;
       let isImageFound = {'objectFit': 'cover'};
 
@@ -104,12 +96,14 @@ class CharList extends Component {
         <li 
           className="char__item"
           tabIndex={0}
+          ref={el => itemRefs.current[i] = el} // формируем список рефов на каждой итерации
           key={key}
-          onClick={()=>{this.props.onCharSelected(key);} // передаем id в компонент App.js
+          onClick={()=>{props.onCharSelected(key);} // передаем id в компонент App.js
         }
         onKeyPress={(e) => {
           if (e.key === "Enter") {
-              this.props.onCharSelected(key);
+              props.onCharSelected(key);
+              focusOnItem(i)
           }
       }}>
           <img src={thumbnail} alt={name} style={isImageFound} />
@@ -121,10 +115,7 @@ class CharList extends Component {
     return <ul className="char__grid">{items}</ul>;
   };
 
-  render() {
-    const { charsArray, loading, error404, loadingMore, offset, charEnded} = this.state;
-
-    const items = this.preRenderChars(charsArray);
+    const items = preRenderChars(charsArray);
 
     const errorMessage = error404 ? <ErrorMessage/> : null;
     const spinner = loading ? <img src={loadingGear} alt="loading..." className="center" /> : null;
@@ -138,13 +129,12 @@ class CharList extends Component {
         <button className="button button__main button__long"
                 disabled={loadingMore}
                 style={{'display': charEnded? 'none': 'block'}}
-                onClick={()=> this.loadMoreRequest(offset)}>
+                onClick={()=> loadMoreRequest(offset)}>
           <div className="inner">load more</div>
         </button>
       </div>
     );
   }
-}
 
 CharList.propTypes = {
   onCharSelected: PropTypes.func.isRequired

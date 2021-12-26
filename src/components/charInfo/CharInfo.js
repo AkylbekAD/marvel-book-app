@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import loadingGear from '../spinner/loading-gear.gif';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
@@ -7,59 +7,49 @@ import MarvelService from '../../services/MarvelService';
 
 import './charInfo.scss';
 
-class CharInfo extends Component {
-    state = {
-        char: null,
-        loading: false,
-        error404: false,
-      };
+const CharInfo = (props) => {
 
-    marvelService = new MarvelService();
+    const [char, setChar] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error404, setError404] = useState(false);
 
-    componentDidMount() {
-        this.updateChar();
-    }
+    const marvelService = new MarvelService();
 
-    componentDidUpdate(prevProps) {
-        if (this.props.charId !== prevProps.charId){
-            this.updateChar();
-        }
+    useEffect(() => {
+        updateChar();
+    }, [props.charId])
 
-    }
+    // componentDidCatch(err, info) {
+    //     console.log(err, info);
+    //     this.setState({error404:true});
+    // }
 
-    componentDidCatch(err, info) {
-        console.log(err, info);
-        this.setState({error404:true});
-    }
-
-    updateChar = () => {
-        const {charId} = this.props;
+    const updateChar = () => {
+        const {charId} = props;
         if (!charId) {return}
 
-        this.onCharLoading();
+        onCharLoading();
 
-        this.marvelService
+        marvelService
             .getOneCharacter(charId)
-            .then(this.onCharLoaded)
-            .catch(this.onError404)
+            .then(onCharLoaded)
+            .catch(onError404)
     }
 
-    onError404 = () => {
-        this.setState({ loading: false, error404: true });
+    const onError404 = () => {
+        setLoading (false);
+        setError404 (true);
       };
     
-      onCharLoading =() => { // показываем спинер до загрузки
-        this.setState({loading:true})
+    const onCharLoading = () => { // показываем спинер до загрузки
+        setLoading (true)
       }
     
-      onCharLoaded = (char) => {
+    const onCharLoaded = (char) => {
         // просто перезаписываем state как только данные загрузились, меняем статус загрузки и ошибки
-        this.setState({ char, loading: false , error404: false});
-      };
-    
-    render() {
-
-        const {char, loading, error404} = this.state;
+        setChar (char);
+        setLoading(false);
+      }
         
         const skeleton = char || loading || error404 ? null : <Skeleton/>;
         const errorMessage = error404 ? <ErrorMessage /> : null;
@@ -77,7 +67,6 @@ class CharInfo extends Component {
             </div>
         )
     }
-}
 
 const View = ({char}) => {
 
