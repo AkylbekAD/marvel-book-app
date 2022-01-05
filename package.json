@@ -1,6 +1,9 @@
 {
   "name": "marvel",
   "version": "0.1.0",
+  "engines": {
+    "node": "14.x"
+  },
   "private": true,
   "homepage": "https://akylbekad.github.io/my-app",
   "dependencies": {
