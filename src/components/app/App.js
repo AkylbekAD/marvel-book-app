@@ -1,6 +1,7 @@
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
-import  {MainPage, ComicsPage} from '../pages';
+import MainPage  from '../pages/MainPage';
+import ComicsPage from '../pages/ComicsPage'
 import AppHeader from "../appHeader/AppHeader";
 
 
