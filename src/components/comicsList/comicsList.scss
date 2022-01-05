@@ -1,3 +1,5 @@
+@import '../../style/variables.scss';
+
 .comics {
     &__list {
         margin-top: 45px;
@@ -16,12 +18,14 @@
             height: 345px;
         }
         &-name {
+            text-align: center;
             margin-top: 10px;
             font-weight: bold;
             font-size: 14px;
             line-height: 18px;
         }
         &-price {
+            text-align: center;         
             margin-top: 5px;
             font-weight: bold;
             font-size: 14px;
@@ -30,7 +34,9 @@
             text-transform: uppercase;
         }
         &:hover {
+            box-shadow: 0 5px 20px $main-color;
             transform: translateY(-5px);
         }
+        
     }
 }

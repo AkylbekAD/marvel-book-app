@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import loadingGear from '../spinner/loading-gear.gif';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 
 import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
@@ -9,10 +9,8 @@ import mjolnir from '../../resources/img/mjolnir.png';
 const RandomChar = () => {
 
   const [char, setChar] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error404, setError404] = useState(false);
 
-  const marvelService = new MarvelService();
+  const {loading, error404, getOneCharacter, clearError} = useMarvelService();
 
   useEffect(() => {
     updateChar();
@@ -23,30 +21,17 @@ const RandomChar = () => {
     }
   }, [])
 
-  const onError404 = () => {
-    setLoading(false);
-    setError404(true);
-  };
-
-  const onCharLoading =() => { // показываем спинер до загрузки
-    setLoading (true)
-  }
-
   const onCharLoaded = (char) => {
     // просто перезаписываем state как только данные загрузились, меняем статус загрузки и ошибки
     setChar (char);
-    setLoading(false);
   };
 
   const updateChar = () => {
-    setError404 (false) // сбрасываем ошибку для повторной загрузки
-    onCharLoading();
-
+    clearError(); // очистка ошибки
     const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
 
-    marvelService.getOneCharacter(id)
+    getOneCharacter(id)
       .then(onCharLoaded) // вызываем метод для 1 char и передаем его в метод onCharLoaded
-      .catch(onError404);
   };
 
     const errorMessage = error404 ? <ErrorMessage /> : null;

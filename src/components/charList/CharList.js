@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import PropTypes from 'prop-types';
 
 import loadingGear from '../spinner/loading-gear.gif';
@@ -10,23 +10,24 @@ import './charList.scss';
 const CharList = (props) => {
 
   const [charsArray, setCharsArray] = useState ([])
-  const [loading, setLoading] = useState (true)
-  const [error404, setError404] = useState (false)
   const [loadingMore, setLoadingMore] = useState (false) // отвечает за отключение фукнции кнопки Load more
   const [offset, setOffset] = useState (210) // id по загрузке новых персонажей
   const [charEnded, setCharEnded] = useState (false) // проверка на конечность списка персонажей
 
-  const marvelService = new MarvelService();
+  const {loading, error404, getAllCharacters} = useMarvelService();
+
+  // useEffect(() => { // первоначальная загрузка
+  //   loadMoreRequest(offset, true);
+  // }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener ('scroll', onScroll);
   }, []);
 
-  useEffect(() => {
-    if (loadingMore && !charEnded) {
-    setOffset (offset => offset + 9)
-    console.log (offset)
+  useEffect(() => { 
+    if (loadingMore && !charEnded || charsArray.length === 0) { // 3 операнд отрабатывает true при первоначальной загрузке 
+    setOffset (offset => offset + 9) 
     loadMoreRequest(offset);
     }
   }, [loadingMore]);
@@ -40,14 +41,8 @@ const CharList = (props) => {
   };
 
   const loadMoreRequest = (offset) => { // подгрузка 9 персонажей на страницу
-    onCharListLoading();
-    marvelService.getAllCharacters(offset)
+    getAllCharacters(offset)
       .then(onCharLoaded) // вызываем метод для 1 char и передаем его в метод onCharLoaded
-      .catch(onError404);
-  }
-
-  const onCharListLoading = () => {
-      setLoadingMore(true);
   }
 
   const onCharLoaded = (newCharsArray) => {
@@ -58,15 +53,9 @@ const CharList = (props) => {
     }
 
     setCharsArray (charsArray => [...charsArray, ...newCharsArray]);
-    setLoading (false);
     setLoadingMore (false);
     setOffset (offset => offset + 9);
     setCharEnded (ended);
-  }
-
-  const onError404 = () => {
-    setLoading (false);
-    setError404(true)
   }
 
   const itemRefs = useRef ([]);
@@ -118,14 +107,13 @@ const CharList = (props) => {
     const items = preRenderChars(charsArray);
 
     const errorMessage = error404 ? <ErrorMessage/> : null;
-    const spinner = loading ? <img src={loadingGear} alt="loading..." className="center" /> : null;
-    const content = !(loading || error404) ? items : null;
+    const spinner = loading && !loadingMore ? <img src={loadingGear} alt="loading..." className="center" /> : null;
 
     return (
       <div className="char__list">
         {errorMessage}
-        {spinner} 
-        {content}
+        {spinner}
+        {items}
         <button className="button button__main button__long"
                 disabled={loadingMore}
                 style={{'display': charEnded? 'none': 'block'}}

@@ -3,17 +3,15 @@ import loadingGear from '../spinner/loading-gear.gif';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
 
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 
 import './charInfo.scss';
 
 const CharInfo = (props) => {
 
     const [char, setChar] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error404, setError404] = useState(false);
 
-    const marvelService = new MarvelService();
+    const {loading, error404, getOneCharacter, clearError} = useMarvelService();
 
     useEffect(() => {
         updateChar();
@@ -28,27 +26,14 @@ const CharInfo = (props) => {
         const {charId} = props;
         if (!charId) {return}
 
-        onCharLoading();
-
-        marvelService
-            .getOneCharacter(charId)
+        clearError();
+        getOneCharacter(charId)
             .then(onCharLoaded)
-            .catch(onError404)
     }
-
-    const onError404 = () => {
-        setLoading (false);
-        setError404 (true);
-      };
-    
-    const onCharLoading = () => { // показываем спинер до загрузки
-        setLoading (true)
-      }
     
     const onCharLoaded = (char) => {
         // просто перезаписываем state как только данные загрузились, меняем статус загрузки и ошибки
         setChar (char);
-        setLoading(false);
       }
         
         const skeleton = char || loading || error404 ? null : <Skeleton/>;
