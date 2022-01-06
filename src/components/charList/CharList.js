@@ -16,9 +16,9 @@ const CharList = (props) => {
 
   const {loading, error404, getAllCharacters} = useMarvelService();
 
-  // useEffect(() => { // первоначальная загрузка
-  //   loadMoreRequest(offset, true);
-  // }, []);
+  useEffect(() => { // первоначальная загрузка
+    loadMoreRequest(offset, true);
+  }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', onScroll);
@@ -26,7 +26,7 @@ const CharList = (props) => {
   }, []);
 
   useEffect(() => { 
-    if (loadingMore && !charEnded || charsArray.length === 0) { // 3 операнд отрабатывает true при первоначальной загрузке 
+    if (loadingMore && !charEnded) { // 3 операнд отрабатывает true при первоначальной загрузке 
     setOffset (offset => offset + 9) 
     loadMoreRequest(offset);
     }

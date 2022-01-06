@@ -5,7 +5,7 @@
     "node": "14.x"
   },
   "private": true,
-  "homepage": "https://akylbekad.github.io/my-app",
+  "homepage": "https://AkylbekAD.github.io/marvel-book-app",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",

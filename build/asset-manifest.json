@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/my-app/static/css/main.1b56fc61.chunk.css",
-    "main.js": "/my-app/static/js/main.2cc6db8e.chunk.js",
-    "main.js.map": "/my-app/static/js/main.2cc6db8e.chunk.js.map",
-    "runtime-main.js": "/my-app/static/js/runtime-main.071986e2.js",
-    "runtime-main.js.map": "/my-app/static/js/runtime-main.071986e2.js.map",
-    "static/js/2.efb3624c.chunk.js": "/my-app/static/js/2.efb3624c.chunk.js",
-    "static/js/2.efb3624c.chunk.js.map": "/my-app/static/js/2.efb3624c.chunk.js.map",
-    "index.html": "/my-app/index.html",
-    "static/css/main.1b56fc61.chunk.css.map": "/my-app/static/css/main.1b56fc61.chunk.css.map",
-    "static/js/2.efb3624c.chunk.js.LICENSE.txt": "/my-app/static/js/2.efb3624c.chunk.js.LICENSE.txt",
-    "static/media/Avengers.4065c8f9.png": "/my-app/static/media/Avengers.4065c8f9.png",
-    "static/media/Avengers_logo.9eaf2193.png": "/my-app/static/media/Avengers_logo.9eaf2193.png",
-    "static/media/error404.d0455bd5.gif": "/my-app/static/media/error404.d0455bd5.gif",
-    "static/media/loading-gear.d0c247f1.gif": "/my-app/static/media/loading-gear.d0c247f1.gif",
-    "static/media/mjolnir.61f31e18.png": "/my-app/static/media/mjolnir.61f31e18.png",
-    "static/media/vision.067d4ae1.png": "/my-app/static/media/vision.067d4ae1.png"
+    "main.css": "/marvel-book-app/static/css/main.1b56fc61.chunk.css",
+    "main.js": "/marvel-book-app/static/js/main.c1ebf857.chunk.js",
+    "main.js.map": "/marvel-book-app/static/js/main.c1ebf857.chunk.js.map",
+    "runtime-main.js": "/marvel-book-app/static/js/runtime-main.dcd97c4a.js",
+    "runtime-main.js.map": "/marvel-book-app/static/js/runtime-main.dcd97c4a.js.map",
+    "static/js/2.efb3624c.chunk.js": "/marvel-book-app/static/js/2.efb3624c.chunk.js",
+    "static/js/2.efb3624c.chunk.js.map": "/marvel-book-app/static/js/2.efb3624c.chunk.js.map",
+    "index.html": "/marvel-book-app/index.html",
+    "static/css/main.1b56fc61.chunk.css.map": "/marvel-book-app/static/css/main.1b56fc61.chunk.css.map",
+    "static/js/2.efb3624c.chunk.js.LICENSE.txt": "/marvel-book-app/static/js/2.efb3624c.chunk.js.LICENSE.txt",
+    "static/media/Avengers.4065c8f9.png": "/marvel-book-app/static/media/Avengers.4065c8f9.png",
+    "static/media/Avengers_logo.9eaf2193.png": "/marvel-book-app/static/media/Avengers_logo.9eaf2193.png",
+    "static/media/error404.d0455bd5.gif": "/marvel-book-app/static/media/error404.d0455bd5.gif",
+    "static/media/loading-gear.d0c247f1.gif": "/marvel-book-app/static/media/loading-gear.d0c247f1.gif",
+    "static/media/mjolnir.61f31e18.png": "/marvel-book-app/static/media/mjolnir.61f31e18.png",
+    "static/media/vision.067d4ae1.png": "/marvel-book-app/static/media/vision.067d4ae1.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.071986e2.js",
+    "static/js/runtime-main.dcd97c4a.js",
     "static/js/2.efb3624c.chunk.js",
     "static/css/main.1b56fc61.chunk.css",
-    "static/js/main.2cc6db8e.chunk.js"
+    "static/js/main.c1ebf857.chunk.js"
   ]
 }

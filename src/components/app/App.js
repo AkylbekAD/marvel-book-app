@@ -1,8 +1,8 @@
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 import MainPage  from '../pages/MainPage';
-import ComicsPage from '../pages/ComicsPage'
-import AppHeader from "../appHeader/AppHeader";
+import ComicsPage from '../pages/ComicsPage';
+import AppHeader from '../appHeader/AppHeader';
 
 
 const App = () => {
