@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/marvel-book-app/static/css/main.1b56fc61.chunk.css",
-    "main.js": "/marvel-book-app/static/js/main.c1ebf857.chunk.js",
-    "main.js.map": "/marvel-book-app/static/js/main.c1ebf857.chunk.js.map",
+    "main.js": "/marvel-book-app/static/js/main.545cc785.chunk.js",
+    "main.js.map": "/marvel-book-app/static/js/main.545cc785.chunk.js.map",
     "runtime-main.js": "/marvel-book-app/static/js/runtime-main.dcd97c4a.js",
     "runtime-main.js.map": "/marvel-book-app/static/js/runtime-main.dcd97c4a.js.map",
     "static/js/2.efb3624c.chunk.js": "/marvel-book-app/static/js/2.efb3624c.chunk.js",
@@ -21,6 +21,6 @@
     "static/js/runtime-main.dcd97c4a.js",
     "static/js/2.efb3624c.chunk.js",
     "static/css/main.1b56fc61.chunk.css",
-    "static/js/main.c1ebf857.chunk.js"
+    "static/js/main.545cc785.chunk.js"
   ]
 }
