@@ -26,7 +26,7 @@ const CharList = (props) => {
   }, []);
 
   useEffect(() => { 
-    if (loadingMore && !charEnded) { // 3 операнд отрабатывает true при первоначальной загрузке 
+    if (loadingMore && !charEnded) {
     setOffset (offset => offset + 9) 
     loadMoreRequest(offset);
     }
@@ -47,6 +47,7 @@ const CharList = (props) => {
 
   const onCharLoaded = (newCharsArray) => {
     // просто перезаписываем state как только данные загрузились, меняем статус загрузки и ошибки
+
     let ended = false;
     if (newCharsArray.length < 9) {
        ended = true;

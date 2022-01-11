@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
 import loadingGear from '../spinner/loading-gear.gif';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
@@ -17,10 +19,6 @@ const CharInfo = (props) => {
         updateChar();
     }, [props.charId])
 
-    // componentDidCatch(err, info) {
-    //     console.log(err, info);
-    //     this.setState({error404:true});
-    // }
 
     const updateChar = () => {
         const {charId} = props;
@@ -97,7 +95,7 @@ const View = ({char}) => {
                     comics.map((item, i)=> {
                         return(
                             <li key={i} className="char__comics-item">
-                            <a href={item.resourceURI}>{item.name}</a>
+                            <Link to={`/comics/${item.resourceURI.substring(43)}`}>{item.name}</Link>
                             </li>
                         )
                         }

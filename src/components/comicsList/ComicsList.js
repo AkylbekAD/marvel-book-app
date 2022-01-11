@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import useMarvelService from '../../services/MarvelService';
 
 import loadingGear from '../spinner/loading-gear.gif';
@@ -10,7 +11,7 @@ const ComicsList = (props) => {
 
     const [comicsArray, setComicsArray] = useState ([])
     const [loadingMore, setLoadingMore] = useState (false) // отвечает за отключение фукнции кнопки Load more
-    const [offset, setOffset] = useState (210) // id по загрузке новых 
+    const [offset, setOffset] = useState (555) // id по загрузке новых 
     const [comicsEnded, setComicsEnded] = useState (false) // проверка на конечность списка 
   
     const {loading, error404, getAllComics} = useMarvelService();
@@ -48,7 +49,7 @@ const ComicsList = (props) => {
       const onComicsLoaded = (newComicsArray) => {
         // перезаписываем state как только данные загрузились, меняем статус загрузки и ошибки
         let ended = false;
-        if (newComicsArray.length < 8) {
+        if (newComicsArray.length < 1) {
            ended = true;
         }
     
@@ -57,18 +58,20 @@ const ComicsList = (props) => {
         setOffset (offset => offset + 8);
         setComicsEnded (ended);
       }
-
+      
       function preRenderComics (arr) {
-        const items = arr.map((item) => {
+        const items = arr.map((item, i) => {
           let { key, title, thumbnail, price} = item;
 
           return (
-            <li className="comics__item" key={key}>
-                <a href="#">
+            <li className="comics__item"
+                key={i}
+                >
+                <Link to={`/comics/${key}`}>
                     <img src={thumbnail} alt={title} className="comics__item-img"/>
                     <div className="comics__item-name">{title}</div>
                     <div className="comics__item-price">{price}</div>
-                </a>
+                </Link>
             </li>
         );
       })
