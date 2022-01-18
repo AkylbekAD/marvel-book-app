@@ -5,12 +5,12 @@ import AppHeader from '../appHeader/AppHeader';
 
 import loadingGear from '../spinner/loading-gear.gif';
 
-import './singleComicPage.scss';
+import './SingleComicPage/singleComicPage.scss';
 
 const Page404 = lazy(() => import('./Page404'));
 const MainPage = lazy(() => import('./MainPage'));
 const ComicsPage = lazy(() => import('./ComicsPage'));
-const SingleComicPage = lazy(() => import('./SingleComicPage'))
+const SingleComicPage = lazy(() => import('./SingleComicPage/SingleComicPage'))
 
 const App = () => {
 
